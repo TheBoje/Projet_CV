@@ -222,7 +222,7 @@ cv::Mat whiteBalance(const cv::Mat &input, const cv::Mat &zone, int min_threshol
 
     mask = split[0].mul(split[1].mul(split[2]));
 
-    cv::imshow("mask", mask * 255);
+    // cv::imshow("mask", mask * 255);
 
     return applyWhileBalance(input, zone, mask);
 }
@@ -375,10 +375,11 @@ void TP1()
     cv::cvtColor(image, grayImage, cv::COLOR_BGR2GRAY);
     // cv::namedWindow(winname, cv::WINDOW_AUTOSIZE);
     // cv::namedWindow(winname2, cv::WINDOW_AUTOSIZE);
-    //	cv::Mat hist = histogramme(grayImage);
-    //	cv::Mat imgHist = getHistImg(hist);
+    cv::Mat hist = histogramme(grayImage);
+    cv::Mat imgHist = getHistImg(hist);
     cv::Mat equalizedImg = stretchHist(grayImage);
-    //	cv::Mat equalizedHist = getHistImg(histogramme(equalizedImg));
+    cv::Mat equalizedHist = getHistImg(histogramme(equalizedImg));
+    cv::imwrite("out.png", equalizedHist);
 
     cv::Mat mask = cv::Mat::zeros(equalizedImg.rows + 2, equalizedImg.cols + 2, CV_8UC1);
     cv::floodFill(equalizedImg, mask, cv::Point(0, 0), 1, 0, cv::Scalar(), cv::Scalar(), cv::FLOODFILL_MASK_ONLY);
@@ -454,8 +455,8 @@ void TP1()
     cv::merge(equalised_channels_hls, 3, equalised_hls_no_mask);
     cv::Mat to_show;
     cv::cvtColor(equalised_hls_no_mask, to_show, cv::COLOR_HLS2BGR_FULL);
-    cv::imshow("white", white_hls);
-    cv::imshow("equalised_hLs_no_mask", to_show);
+    // cv::imshow("white", white_hls);
+    // cv::imshow("equalised_hLs_no_mask", to_show);
     cv::Mat equalised_hls_mask;
     cv::Mat equalised_channels_hls_mask[3];
     equalised_channels_hls_mask[0] = equalised_channels_hls[0];
@@ -464,9 +465,9 @@ void TP1()
     cv::merge(equalised_channels_hls_mask, 3, equalised_hls_mask);
     cv::Mat to_show2;
     cv::cvtColor(equalised_hls_mask, to_show2, cv::COLOR_HLS2BGR_FULL);
-    cv::imshow("equalised_hLs_mask", to_show2);
+    // cv::imshow("equalised_hLs_mask", to_show2);
     cv::Mat hist_hls_eq = getHistImg(histogramme(equalised_channels_hls_mask[1], mask));
-    cv::imshow("hist_hls_eq", hist_hls_eq);
+    // cv::imshow("hist_hls_eq", hist_hls_eq);
 }
 
 void TP2()
@@ -475,7 +476,7 @@ void TP2()
 
     cv::Mat image, blur;
     image = cv::imread(imageName, cv::IMREAD_COLOR);
-    cv::imshow("default", image);
+    // cv::imshow("default", image);
     // cv::blur(image, blur, cv::Size(3, 3));
     // cv::blur(image, blur, cv::Size(5, 5));
     // cv::blur(image, blur, cv::Size(7, 7));
@@ -506,15 +507,16 @@ void TP2()
     channels[2] = getHistImg(histogramme(channels[2], mask));
     cv::Mat res;
     cv::merge(channels, 3, res);
-    cv::imshow("hist blured", res);
-    cv::imshow("blured", blur);
+    // cv::imshow("hist blured", res);
+    // cv::imshow("blured", blur);
 }
 
 int main()
 {
     cv::utils::logging::setLogLevel(cv::utils::logging::LogLevel::LOG_LEVEL_SILENT);
 
-    TP2();
+    TP1();
+    //TP2();
 
     cv::waitKey(0);
 
