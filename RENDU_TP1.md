@@ -51,16 +51,32 @@ On constate que l'histogramme a pour maximum 120, aussi bien pour le maximum d'o
 
 L'étirement d'histogramme consiste à augmenter le contraste de l'image en augmentant sur l'histogramme l'intervalle [min, max]. On obtient alors le résultat suivant :
 
-|          Initiale          |             Etirée             |
-| :------------------------: | :----------------------------: |
-| ![](/img/tp1/initiale.png) |   ![](img/tp1/stretched.png)   |
-|   ![](/img/tp1/hist.png)   | ![](img/tp1/stretchedhist.png) |
+|        Initiale        |             Etirée             |
+| :--------------------: | :----------------------------: |
+| ![](/img/tp1/gray.png) |   ![](img/tp1/stretched.png)   |
+| ![](/img/tp1/hist.png) | ![](img/tp1/stretchedhist.png) |
 
-TODO: Répondre à la question : Êtes-vous satisfait du résultat visuel ? Est-il facile à interpréter ? Qu'est-ce qui pose problème ?
+On remarque que l'étirement de l'histogramme amplifie le contraste de l'image. Le résultat est donc plus lisible. Cependant, l'étirement pose un problème, des couleurs déjà existantes ne sont plus présentes (écart entre plusieurs piques de couleurs).
 
 ## 3. Création du masque
 
+On remarque que lors du calcul de l'histogramme, nous avons un pique (en 120 pour l'image en niveau de gris de base et en 255 pour l'image avec l'histogramme étirée). En scannant la couleur du fond de l'image, on se rend compte que c'est celle-ci qui influence ce pique. On peut donc l'ajouter dans le masque afin de ne pas le prendre en compte lors des calculs.
+
+Pour le calculer, nous utilisons une croissance de germes dans les quatre coins de l'image.
+
+![](img/tp1/mask.png)
+
 ## 4. Histogramme avec masque
+
+<table>
+  <tr>
+    <td><img src="img/tp1/streched_image_mask.png"/></td>
+    <td><img src="img/tp1/streched_hist_mask.png"/></td>
+  </tr>
+  <tr>
+    <td colspan=2><em>Image étiré avec son histogramme</td>
+  </tr>
+</table>
 
 ## 5. Histogramme cumulé et égalisation d'histogramme
 
