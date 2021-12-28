@@ -80,6 +80,12 @@ Pour le calculer, nous utilisons une croissance de germes dans les quatre coins 
 
 ## 5. Histogramme cumulé et égalisation d'histogramme
 
+| ![](img/tp1/equalized.png) |  ![](img/tp1/hist_equalized.png)  | ![](img/tp1/hist_cum.png) |
+| :------------------------: | :-------------------------------: | :-----------------------: |
+|      *image égalisée*      | *histogramme de l'image égalisée* |   *histogramme cumulé*    |
+
+L'image issue de l'égalisation est plus contrastée que l'image originale. Son histogramme ets plus étiré sur les pixels les plus clairs. On remarque que l'histogramme cumulé est bien linéaire comme attendu.
+
 # Exercice 3 : Balance des blancs sur les canaux BGR
 
 ## 1. Création d'une fonction de balance des blancs
