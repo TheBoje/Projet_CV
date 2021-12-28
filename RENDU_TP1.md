@@ -51,9 +51,10 @@ On constate que l'histogramme a pour maximum 120, aussi bien pour le maximum d'o
 
 L'étirement d'histogramme consiste à augmenter le contraste de l'image en augmentant sur l'histogramme l'intervalle [min, max]. On obtient alors le résultat suivant :
 
-| ![](/img/tp1/hist.png) | ![](img/tp1/stretched.png) |
-| :--------------------: | :------------------------: |
-|  Histogramme initial   |     Histogramme étiré      |
+|          Initiale          |             Etirée             |
+| :------------------------: | :----------------------------: |
+| ![](/img/tp1/initiale.png) |   ![](img/tp1/stretched.png)   |
+|   ![](/img/tp1/hist.png)   | ![](img/tp1/stretchedhist.png) |
 
 TODO: Répondre à la question : Êtes-vous satisfait du résultat visuel ? Est-il facile à interpréter ? Qu'est-ce qui pose problème ?
 

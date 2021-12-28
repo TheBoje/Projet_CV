@@ -379,7 +379,7 @@ void TP1()
     cv::Mat imgHist = getHistImg(hist);
     cv::Mat equalizedImg = stretchHist(grayImage);
     cv::Mat equalizedHist = getHistImg(histogramme(equalizedImg));
-    cv::imwrite("out.png", equalizedHist);
+    cv::imwrite("out.png", equalizedImg);
 
     cv::Mat mask = cv::Mat::zeros(equalizedImg.rows + 2, equalizedImg.cols + 2, CV_8UC1);
     cv::floodFill(equalizedImg, mask, cv::Point(0, 0), 1, 0, cv::Scalar(), cv::Scalar(), cv::FLOODFILL_MASK_ONLY);
