@@ -22,10 +22,8 @@ Composition du groupe :
   - [4. Étirement et égalisation d'histogramme](#4-étirement-et-égalisation-dhistogramme)
   - [5. Seuillage de l'image](#5-seuillage-de-limage)
 - [Exercice 5 : Histogramme 1D sur les canaux HLS](#exercice-5--histogramme-1d-sur-les-canaux-hls)
-  - [1. Conversion vers HLS](#1-conversion-vers-hls)
-  - [2. Histogramme HLS](#2-histogramme-hls)
-  - [3. Egalisation d'histogramme HLS](#3-egalisation-dhistogramme-hls)
-  - [4. Segmentation de l'image](#4-segmentation-de-limage)
+  - [1. Conversion vers HLS, Histogrammes et égalisation d'histogrammes](#1-conversion-vers-hls-histogrammes-et-égalisation-dhistogrammes)
+  - [2. Segmentation de l'image](#2-segmentation-de-limage)
 
 # Introduction
 
@@ -85,9 +83,9 @@ Pour le calculer, nous utilisons une croissance de germes dans les quatre coins 
 L'image issue de l'égalisation est plus contrastée que l'image originale. Son histogramme est plus étiré sur les pixels les plus clairs. On remarque que l'histogramme cumulé est bien linéaire comme attendu, cependant, il n'est pas de la forme $x = y$.
 
 Voici les résultats de l'égalisation que nous avons programmé. Celle-ci prend en compte le masque pour le fond :
-| ![](img/tp1/equalized_perso.png) |  ![](img/tp1/hist_equalized_perso.png)  | ![](img/tp1/hist_cum_equalized_perso.png) |
-| :------------------------: | :-------------------------------: | :-----------------------: |
-|      *image égalisée*      | *histogramme de l'image égalisée* |   *histogramme cumulé*    |
+| ![](img/tp1/equalized_perso.png) | ![](img/tp1/hist_equalized_perso.png) | ![](img/tp1/hist_cum_equalized_perso.png) |
+| :------------------------------: | :-----------------------------------: | :---------------------------------------: |
+|         *image égalisée*         |   *histogramme de l'image égalisée*   |           *histogramme cumulé*            |
 
 # Exercice 3 : Balance des blancs sur les canaux BGR
 
@@ -152,13 +150,25 @@ En utilisant l'image résultant de l'égalisation puis étirement d'histogramme,
 
 # Exercice 5 : Histogramme 1D sur les canaux HLS
 
-## 1. Conversion vers HLS
+## 1. Conversion vers HLS, Histogrammes et égalisation d'histogrammes
 
-## 2. Histogramme HLS
+|   ![](/img/tp1/white_HLS_H.png)    |   ![](/img/tp1/white_HLS_L.png)    |   ![](/img/tp1/white_HLS_S.png)    |         ![](/img/tp1/white_HLS.png)         |
+| :--------------------------------: | :--------------------------------: | :--------------------------------: | :-----------------------------------------: |
+|     *image balancée canal Hue*     |  *image balancée canal Lightness*  | *image balancée canal Saturation*  |      *image balancée convertie en HLS*      |
+| ![](/img/tp1/hist_white_HLS_H.png) | ![](/img/tp1/hist_white_HLS_L.png) | ![](/img/tp1/hist_white_HLS_S.png) |        ![](/img/tp1/hist_3D_HLS.png)        |
+|      *histogramme canal Hue*       |   *histogramme canal Lightness*    |   *histogramme canal Saturation*   | *histogramme des canaux HLS affiché en BGR* |
 
-## 3. Egalisation d'histogramme HLS
+On note que pour la conversion de `BGR` vers `HLS`, on utilise le code de conversion `cv::COLOR_BGR2HLS_FULL` qui permet d'obtenir $H \in [0, 255]$ au lieu de $[0, 180]$ avec le code `cv::COLOR_BGR2HLS`. Cela nous permet donc de réutiliser notre fonction de calcul d'histogramme 1D vu précédemment.
 
-## 4. Segmentation de l'image
+On remarque qu'après conversion, les couleurs de l'image HLS affichée sont incorrectes. En effet, la fonction `cv::imshow()` affiche l'image en tant que `BGR`. Pour afficher correctement l'image, il faut soit afficher les canaux séparément, soit convertir l'image `HLS` en `BGR` et donc utiliser `cv::imshow()` convenablement. 
+
+On remarque que la table a une teinte (hue) très faible, mais une saturation très importante.
+
+Pour le canal H, le pic en 0 correspond au fond, et le pic en ~25 à la table. 
+Pour le canal L, le pic en 60 correspond à la table et aux faces du Rubik's cube, et le pic en 120 au fond de l'image.
+Pour le canal S, le pic en 0 correspond au fond de l'image.
+
+## 2. Segmentation de l'image
 
 Notre but ici est d'isoler le Rubik's cube de la table et du fond. Pour cela nous utilisons la teinte. Passer par la teinte nous permet d'ajouter la table au masque en effectuant un seuillage. Ainsi, toutes les valeurs de teintes ne se trouvant pas sur le Rubik's cube sont mise à 0 dans le masque.
 
