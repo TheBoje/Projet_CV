@@ -160,8 +160,14 @@ En utilisant l'image résultant de l'égalisation puis étirement d'histogramme,
 
 ## 4. Segmentation de l'image
 
+Notre but ici est d'isoler le Rubik's cube de la table et du fond. Pour cela nous utilisons la teinte. Passer par la teinte nous permet d'ajouter la table au masque en effectuant un seuillage. Ainsi, toutes les valeurs de teintes ne se trouvant pas sur le Rubik's cube sont mise à 0 dans le masque.
 
-
-| ![]() | ![]() | ![]() |
+| ![]() | ![](img/tp1/hue_segmented.png) | ![](img/tp1/segmented.png) |
 | :---: | :---: | :---: |
-|       |       |       |
+|       |   *canal de la teinte segmenté (on prend un seuil à 58 car la teinte de la table se trouve en dessous de cette valeur et que le fond se trouve déjà dans le masque)*   |   *image segmentée par un masque calculé à partir d'un seuillage de la teinte sur tous les canaux*    |
+
+Afin de séparer chaque face (donc couleur) du cube, nous avons chercher le seuille de manière empirique en utilisant une trackbar. Comme chaque ton est différent et que nous souhaitons les séparer, nous sommes obligés d'utiliser un masque "inférieur" et un masque "supérieur" calculé par seuillage.
+
+| ![](img/tp1/rr.png) | ![](img/tp1/rg.png) | ![](img/tp1/rb.png) |
+| :---: | :---: | :---: |
+|   *face rouge avec un ton compris entre 178 et 197*    |   *face verte avec un ton compris entre 119 et 160*   |   *face bleue avec un ton compris entre 58 et 72*    |
