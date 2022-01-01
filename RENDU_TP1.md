@@ -18,11 +18,9 @@ Composition du groupe :
   - [3. Balance des blancs seuillée](#3-balance-des-blancs-seuillée)
 - [Exercice 4 : Histogramme 1D sur les canaux BGR](#exercice-4--histogramme-1d-sur-les-canaux-bgr)
   - [1. Superposition des histogrammes](#1-superposition-des-histogrammes)
-  - [2. Prise en compte du masque](#2-prise-en-compte-du-masque)
   - [3. Comparaison des histogramme](#3-comparaison-des-histogramme)
-  - [4. Étirement d'histogramme](#4-étirement-dhistogramme)
-  - [5. Égalisation d'histogramme](#5-égalisation-dhistogramme)
-  - [6. Seuillage de l'image](#6-seuillage-de-limage)
+  - [4. Étirement et égalisation d'histogramme](#4-étirement-et-égalisation-dhistogramme)
+  - [5. Seuillage de l'image](#5-seuillage-de-limage)
 - [Exercice 5 : Histogramme 1D sur les canaux HLS](#exercice-5--histogramme-1d-sur-les-canaux-hls)
   - [1. Conversion vers HLS](#1-conversion-vers-hls)
   - [2. Histogramme HLS](#2-histogramme-hls)
@@ -95,25 +93,56 @@ Voici les résultats de l'égalisation que nous avons programmé. Celle-ci prend
 
 ## 1. Création d'une fonction de balance des blancs
 
-TODO : Que constatez-vous sur les couleurs du rubik’s cube ? de la table ? et de l’arrière-plan ?
+
+Pour appliquer une balance des blancs sur une image BGR, nous utilisons une transformation linéaire des trois canaux à partir d'une zone grise donnée en paramètre. Par exemple, à partir de l'image couleur et en utilisant un carré de 200x200 px en haut à gauche de l'image pour la référence de zone grise, nous obtenons le résultat suivant :
+
+| ![](img/tp1/initiale.png) | ![](img/tp1/white_balance.png) |
+| :-----------------------: | :----------------------------: |
+|     *image initiale*      | *image avec balance de blancs* |
+
+Nous pouvons constater que toutes les couleurs de l'image ont été orientées vers le rouge. La face rouge du rubik's cube est plus contrastée, mais les autres couleurs semblent un peu fausses, notamment pour la couleur de la table. Ce problème est due au fait que la zone de référence donnée (donc ici l'arrière plan) n'est pas de couleur grise, faussant le calcule de transformation linéaire.
 
 ## 2. Utilisation de la fonction de OpenCV
 
+Nous n'avons pas réussi à faire fonctionner la fonction `cv::xphoto::WhiteBalancer::balanceWhite(src, dst)`.
+
 ## 3. Balance des blancs seuillée
+
+
+| ![](img/tp1/initiale.png) | ![](img/tp1/white_balance.png) | ![](img/tp1/white_balance_threshold.png) |
+| :-----------------------: | :----------------------------: | :--------------------------------------: |
+|     *image initiale*      | *image avec balance de blancs* | *image avec balance des blancs seuillé*  |
+
+Avec un seuil à [35, 230], il est difficile de remarquer des différences majeures par rapport à la version non-seuillée.  
 
 # Exercice 4 : Histogramme 1D sur les canaux BGR
 
 ## 1. Superposition des histogrammes
 
-## 2. Prise en compte du masque
+| ![](img/tp1/initiale.png) | ![](img/tp1/hist_3D.png) | ![](img/tp1/hist_3D_mask.png) |
+| :-----------------------: | :----------------------: | :---------------------------: |
+|     *image initiale*      |     *histogramme 3D*     | *histogramme 3D avec masque*  |
+
+Les pics larges correspondent à la table, et les pics très étroits correspondent aux faces du Rubik's cube ainsi qu'à l'arrière plan de l'image.
 
 ## 3. Comparaison des histogramme
 
-## 4. Étirement d'histogramme
+|      ![](/img/tp1/hist_3D_mask.png)      |       ![](/img/tp1/hist_3D_wb.png)       |
+| :--------------------------------------: | :--------------------------------------: |
+| *histogramme avec masque image initiale* | *histogramme avec masque image balancée* |
 
-## 5. Égalisation d'histogramme
+On remarque que les histogrammes sont assez similaires, mais il y a un léger décalage du rouge vers la droite et du bleu vers la gauche. 
 
-## 6. Seuillage de l'image
+## 4. Étirement et égalisation d'histogramme
+
+|                                                               |                    *image*                     |          *histogramme avec masque*          |
+| :-----------------------------------------------------------: | :--------------------------------------------: | :-----------------------------------------: |
+|                       *image initiale*                        |           ![](/img/tp1/initiale.png)           |       ![](/img/tp1/hist_3D_mask.png)        |
+|        *balance de blancs et étirement d'histogramme*         |   ![](/img/tp1/white_balance_stretched.png)    |   ![](/img/tp1/hist_3D_wb_stretched.png)    |
+|       *balance de blancs et égalisation d'histogramme*        |      ![](/img/tp1/white_balance_equa.png)      |      ![](/img/tp1/hist_3D_wb_equa.png)      |
+| *balance de blancs et égalisation et étirement d'histogramme* | ![](/img/tp1/white_balance_equa_stretched.png) | ![](/img/tp1/hist_3D_wb_equa_stretched.png) |
+
+## 5. Seuillage de l'image
 
 # Exercice 5 : Histogramme 1D sur les canaux HLS
 
