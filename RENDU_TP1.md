@@ -84,11 +84,18 @@ Pour le calculer, nous utilisons une croissance de germes dans les quatre coins 
 | :------------------------: | :-------------------------------: | :-----------------------: |
 |      *image égalisée*      | *histogramme de l'image égalisée* |   *histogramme cumulé*    |
 
-L'image issue de l'égalisation est plus contrastée que l'image originale. Son histogramme ets plus étiré sur les pixels les plus clairs. On remarque que l'histogramme cumulé est bien linéaire comme attendu.
+L'image issue de l'égalisation est plus contrastée que l'image originale. Son histogramme est plus étiré sur les pixels les plus clairs. On remarque que l'histogramme cumulé est bien linéaire comme attendu, cependant, il n'est pas de la forme $x = y$.
+
+Voici les résultats de l'égalisation que nous avons programmé. Celle-ci prend en compte le masque pour le fond :
+| ![](img/tp1/equalized_perso.png) |  ![](img/tp1/hist_equalized_perso.png)  | ![](img/tp1/hist_cum_equalized_perso.png) |
+| :------------------------: | :-------------------------------: | :-----------------------: |
+|      *image égalisée*      | *histogramme de l'image égalisée* |   *histogramme cumulé*    |
 
 # Exercice 3 : Balance des blancs sur les canaux BGR
 
 ## 1. Création d'une fonction de balance des blancs
+
+TODO : Que constatez-vous sur les couleurs du rubik’s cube ? de la table ? et de l’arrière-plan ?
 
 ## 2. Utilisation de la fonction de OpenCV
 
