@@ -4,6 +4,7 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/core/utils/logger.hpp>
 #include <opencv2/core/types.hpp>
+#include <opencv2/xphoto/white_balance.hpp>
 
 #include <iostream>
 #include <string>
@@ -207,7 +208,7 @@ cv::Mat applyWhileBalance(const cv::Mat &img, const cv::Mat &zone, const cv::Mat
     return imgBalanced;
 }
 
-cv::Mat whiteBalance(const cv::Mat &input, const cv::Mat &zone, int min_threshold = 20, int max_threshold = 235)
+cv::Mat whiteBalance(const cv::Mat &input, const cv::Mat &zone, int min_threshold = 25, int max_threshold = 230)
 {
     cv::Mat mask, t1, t2;
 
@@ -238,7 +239,7 @@ std::vector<cv::Mat> hist3D(cv::Mat input, cv::Mat mask = cv::Mat())
     cv::Mat hist;
     for (int j = 0; j < 3; j++)
     {
-        hist = histogramme(tmp[j]);
+        hist = histogramme(tmp[j], mask);
         for (int i = hist.rows - 1; i >= 0; i--)
         {
             if (hist.at<float>(i, 0) != 0 && i >= maxPos)
@@ -256,10 +257,12 @@ std::vector<cv::Mat> hist3D(cv::Mat input, cv::Mat mask = cv::Mat())
     {
         cv::Mat tmp;
         cv::equalizeHist(channels[i], tmp);
-        cv::Mat tmp2 = stretchHist(channels[i], maxPos);
-        // cv::Mat tmp2 = stretchHist(tmp, maxPos);
+        cv::Mat tmp2 = stretchHist(tmp, maxPos);
+        // cv::Mat tmp2 = stretchHist(channels[i], maxPos);
         tmp_array[i] = tmp2;
+        // tmp_array[i] = tmp;
         vect.push_back(getHistImg(histogramme(tmp2, mask)));
+        // vect.push_back(getHistImg(histogramme(channels[i], mask)));
     }
     cv::Mat array[3];
     std::copy(vect.begin(), vect.end(), array);
@@ -379,13 +382,13 @@ void TP1()
     cv::Mat imgHist = getHistImg(hist);
     cv::Mat equalizedImg = stretchHist(grayImage);
     cv::Mat equalizedHist = getHistImg(histogramme(equalizedImg));
-    cv::imwrite("out.png", equalizedImg);
+    // cv::imwrite("out.png", equalizedImg);
 
-    cv::Mat mask = cv::Mat::zeros(equalizedImg.rows + 2, equalizedImg.cols + 2, CV_8UC1);
-    cv::floodFill(equalizedImg, mask, cv::Point(0, 0), 1, 0, cv::Scalar(), cv::Scalar(), cv::FLOODFILL_MASK_ONLY);
-    cv::floodFill(equalizedImg, mask, cv::Point(equalizedImg.cols - 1, 0), 1, 0, cv::Scalar(), cv::Scalar(), cv::FLOODFILL_MASK_ONLY);
-    cv::floodFill(equalizedImg, mask, cv::Point(0, equalizedImg.rows - 1), 1, 0, cv::Scalar(), cv::Scalar(), cv::FLOODFILL_MASK_ONLY);
-    cv::floodFill(equalizedImg, mask, cv::Point(equalizedImg.cols - 1, equalizedImg.rows - 1), 1, 0, cv::Scalar(), cv::Scalar(), cv::FLOODFILL_MASK_ONLY);
+    cv::Mat mask = cv::Mat::zeros(grayImage.rows + 2, grayImage.cols + 2, CV_8UC1);
+    cv::floodFill(grayImage, mask, cv::Point(0, 0), 1, 0, cv::Scalar(), cv::Scalar(), cv::FLOODFILL_MASK_ONLY);
+    cv::floodFill(grayImage, mask, cv::Point(grayImage.cols - 1, 0), 1, 0, cv::Scalar(), cv::Scalar(), cv::FLOODFILL_MASK_ONLY);
+    cv::floodFill(grayImage, mask, cv::Point(0, grayImage.rows - 1), 1, 0, cv::Scalar(), cv::Scalar(), cv::FLOODFILL_MASK_ONLY);
+    cv::floodFill(grayImage, mask, cv::Point(grayImage.cols - 1, grayImage.rows - 1), 1, 0, cv::Scalar(), cv::Scalar(), cv::FLOODFILL_MASK_ONLY);
 
     mask = 1 - mask;
     mask.adjustROI(-1, -1, -1, -1);
@@ -406,28 +409,33 @@ void TP1()
     // cv::imshow(winname4, equalizedImage);
 
     cv::Mat res_white = whiteBalance(image, image(cv::Rect(0, 0, 200, 200)));
+    // cv::imshow("init", image);
     // cv::Mat res_white = whiteBalance(image, image(cv::Rect(image.cols - 200, image.rows - 200, 200, 200)));
     // cv::Mat res_white = whiteBalance(image, image, 10, 240);
     // cv::imshow(winname, image);
     // cv::imshow("res_white", res_white);
 
-    // cv::Mat hist3D_white = hist3D(res_white, mask);
-    // std::vector<cv::Mat> arr_white = hist3D(res_white, mask);
 
+    // cv::Mat hist3D_white = hist3D(res_white, mask);
+    cv::imshow("image", image);
+    // cv::imwrite("out2.png", res_white);
     // cv::imshow("hist3D_white_mask", arr_white[0]);
     // cv::imshow("white_str_eq", arr_white[1]);
     // cv::createTrackbar("B", "white_str_eq", &b_val, 255, on_trackbar_b, &arr_white[1]);
     // cv::createTrackbar("R", "white_str_eq", &r_val, 255, on_trackbar_r, &arr_white[1]);
     // cv::createTrackbar("G", "white_str_eq", &g_val, 255, on_trackbar_g, &arr_white[1]);
-
-    // cv::imshow("hist3D_white", hist3D(res_white));
+    std::vector<cv::Mat> arr_white = hist3D(res_white, mask);
+    // cv::merge(a, 3, res);
+    // cv::imwrite("out.png", arr_white[0]);
+    // cv::imwrite("out2.png", arr_white[1]);
+    // cv::imshow("hist3D_white2", arr_white[1]);
     // cv::imshow("hist3D_default", hist3D(image));
     // cv::imshow("hist3D_default_mask", hist3D(image, mask));
 
-    // cv::imshow("white_str_eq", res_white);
-    // cv::createTrackbar("B", "white_str_eq", &b_val, 255, on_trackbar_b, &res_white);
-    // cv::createTrackbar("G", "white_str_eq", &g_val, 255, on_trackbar_g, &res_white);
-    // cv::createTrackbar("R", "white_str_eq", &r_val, 255, on_trackbar_r, &res_white);
+    cv::imshow("white_str_eq", res_white);
+    cv::createTrackbar("B", "white_str_eq", &b_val, 255, on_trackbar_b, &res_white);
+    cv::createTrackbar("G", "white_str_eq", &g_val, 255, on_trackbar_g, &res_white);
+    cv::createTrackbar("R", "white_str_eq", &r_val, 255, on_trackbar_r, &res_white);
 
     cv::Mat white_hls;
     cv::cvtColor(res_white, white_hls, cv::COLOR_BGR2HLS_FULL);
