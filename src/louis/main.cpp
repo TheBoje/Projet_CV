@@ -441,7 +441,7 @@ void TP1()
     // cv::createTrackbar("G", "white_str_eq", &g_val, 255, on_trackbar_g, &image);
     // cv::createTrackbar("R", "white_str_eq", &r_val, 255, on_trackbar_r, &image);
 
-    // // cv::waitKey(0);
+    // cv::waitKey(0);
     // update(&image);
 
     cv::Mat white_hls;
@@ -450,8 +450,8 @@ void TP1()
     cv::split(white_hls, hls_split);
     
     // cv::imshow("hist_white_HLS_H.png", getHistImg(histogramme(hls_split[0])));
-    cv::imshow("hist_white_HLS_L.png", getHistImg(histogramme(hls_split[1])));
-    cv::imshow("hist", hls_split[1]);
+    // cv::imshow("hist_white_HLS_L.png", getHistImg(histogramme(hls_split[1])));
+    // cv::imshow("hist", hls_split[1]);
     // cv::imshow("hist_white_HLS_S.png", getHistImg(histogramme(hls_split[2])));
     std::vector<cv::Mat> tmp = hist3D(white_hls);
     // cv::imshow("hist_3D_HLS.png", tmp[0]);
@@ -490,7 +490,7 @@ void TP1()
     cv::merge(equalised_channels_hls_mask, 3, equalised_hls_mask);
     cv::Mat to_show2;
     cv::cvtColor(equalised_hls_mask, to_show2, cv::COLOR_HLS2BGR_FULL);
-    // cv::imshow("equalised_hLs_mask", to_show2);
+    cv::imwrite("white_balance_HLS_equa.png", to_show2);
     cv::Mat hist_hls_eq = getHistImg(histogramme(equalised_channels_hls_mask[1], mask));
     // cv::imshow("hist_hls_eq", hist_hls_eq);
 }

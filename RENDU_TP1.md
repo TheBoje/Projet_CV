@@ -168,6 +168,10 @@ Pour le canal H, le pic en 0 correspond au fond, et le pic en ~25 à la table.
 Pour le canal L, le pic en 60 correspond à la table et aux faces du Rubik's cube, et le pic en 120 au fond de l'image.
 Pour le canal S, le pic en 0 correspond au fond de l'image.
 
+|       ![](/img/tp1/white_HLS_equa_mask.png)        |
+| :------------------------------------------------: |
+| *image balancée avec canal L égalisée avec masque* |
+
 ## 2. Segmentation de l'image
 
 
