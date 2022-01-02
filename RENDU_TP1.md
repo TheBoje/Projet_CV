@@ -138,6 +138,12 @@ On remarque que les histogrammes sont assez similaires, mais il y a un léger d�
 
 ## 5. Seuillage de l'image
 
+En utilisant l'image résultant de l'égalisation puis étirement d'histogramme, nous avons réussi à isoler les faces, notamment avec les valeurs BRG (58, 98, 85) :
+
+| ![](/img/tp1/equa_stretched_threshold.png) |
+| :----------------------------------------: |
+|              *image seuillée*              |
+
 # Exercice 5 : Histogramme 1D sur les canaux HLS
 
 ## 1. Conversion vers HLS
