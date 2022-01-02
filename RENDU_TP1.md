@@ -82,11 +82,17 @@ Pour le calculer, nous utilisons une croissance de germes dans les quatre coins 
 | :------------------------: | :-------------------------------: | :-----------------------: |
 |      *image égalisée*      | *histogramme de l'image égalisée* |   *histogramme cumulé*    |
 
-L'image issue de l'égalisation est plus contrastée que l'image originale. Son histogramme ets plus étiré sur les pixels les plus clairs. On remarque que l'histogramme cumulé est bien linéaire comme attendu.
+L'image issue de l'égalisation est plus contrastée que l'image originale. Son histogramme est plus étiré sur les pixels les plus clairs. On remarque que l'histogramme cumulé est bien linéaire comme attendu, cependant, il n'est pas de la forme $x = y$.
+
+Voici les résultats de l'égalisation que nous avons programmé. Celle-ci prend en compte le masque pour le fond :
+| ![](img/tp1/equalized_perso.png) |  ![](img/tp1/hist_equalized_perso.png)  | ![](img/tp1/hist_cum_equalized_perso.png) |
+| :------------------------: | :-------------------------------: | :-----------------------: |
+|      *image égalisée*      | *histogramme de l'image égalisée* |   *histogramme cumulé*    |
 
 # Exercice 3 : Balance des blancs sur les canaux BGR
 
 ## 1. Création d'une fonction de balance des blancs
+
 
 Pour appliquer une balance des blancs sur une image BGR, nous utilisons une transformation linéaire des trois canaux à partir d'une zone grise donnée en paramètre. Par exemple, à partir de l'image couleur et en utilisant un carré de 200x200 px en haut à gauche de l'image pour la référence de zone grise, nous obtenons le résultat suivant :
 
