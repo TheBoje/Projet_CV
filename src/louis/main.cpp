@@ -256,13 +256,13 @@ std::vector<cv::Mat> hist3D(cv::Mat input, cv::Mat mask = cv::Mat())
     for (int i = 0; i < 3; i++)
     {
         cv::Mat tmp;
-        cv::equalizeHist(channels[i], tmp);
-        cv::Mat tmp2 = stretchHist(tmp, maxPos);
+        // cv::equalizeHist(channels[i], tmp);
+        // cv::Mat tmp2 = stretchHist(tmp, maxPos);
         // cv::Mat tmp2 = stretchHist(channels[i], maxPos);
-        tmp_array[i] = tmp2;
+        // tmp_array[i] = tmp2;
         // tmp_array[i] = tmp;
-        vect.push_back(getHistImg(histogramme(tmp2, mask)));
-        // vect.push_back(getHistImg(histogramme(channels[i], mask)));
+        // vect.push_back(getHistImg(histogramme(tmp2, mask)));
+        vect.push_back(getHistImg(histogramme(channels[i], mask)));
     }
     cv::Mat array[3];
     std::copy(vect.begin(), vect.end(), array);
@@ -270,13 +270,13 @@ std::vector<cv::Mat> hist3D(cv::Mat input, cv::Mat mask = cv::Mat())
     // cv::imshow("hist2", array[1]);
     // cv::imshow("hist3", array[2]);
     cv::Mat res;
-    cv::Mat res_tmp;
+    // cv::Mat res_tmp;
     cv::merge(array, 3, res);
-    cv::merge(tmp_array, 3, res_tmp);
+    // cv::merge(tmp_array, 3, res_tmp);
     // cv::imshow("equalized", res_tmp);
     std::vector<cv::Mat> res_arr;
     res_arr.push_back(res);
-    res_arr.push_back(res_tmp);
+    // res_arr.push_back(res_tmp);
     return res_arr;
 }
 
@@ -436,53 +436,63 @@ void TP1()
     // cv::imshow("hist3D_default", hist3D(image));
     // cv::imshow("hist3D_default_mask", hist3D(image, mask));
 
-    cv::imshow("white_str_eq", image);
-    cv::createTrackbar("B", "white_str_eq", &b_val, 255, on_trackbar_b, &image);
-    cv::createTrackbar("G", "white_str_eq", &g_val, 255, on_trackbar_g, &image);
-    cv::createTrackbar("R", "white_str_eq", &r_val, 255, on_trackbar_r, &image);
+    // cv::imshow("white_str_eq", image);
+    // cv::createTrackbar("B", "white_str_eq", &b_val, 255, on_trackbar_b, &image);
+    // cv::createTrackbar("G", "white_str_eq", &g_val, 255, on_trackbar_g, &image);
+    // cv::createTrackbar("R", "white_str_eq", &r_val, 255, on_trackbar_r, &image);
 
-    // cv::waitKey(0);
-    update(&image);
+    // // cv::waitKey(0);
+    // update(&image);
 
-    // cv::Mat white_hls;
-    // // cv::cvtColor(res_white, white_hls, cv::COLOR_BGR2HLS_FULL);
-    // // cv::imshow("white", res_white);
-    // // cv::imshow("white_HLS", white_hls);
-    // cv::Mat white_hls_split[3];
-    // cv::split(white_hls, white_hls_split);
+    cv::Mat white_hls;
+    cv::cvtColor(res_white, white_hls, cv::COLOR_BGR2HLS_FULL);
+    cv::Mat hls_split[3];
+    cv::split(white_hls, hls_split);
+    
+    // cv::imshow("hist_white_HLS_H.png", getHistImg(histogramme(hls_split[0])));
+    cv::imshow("hist_white_HLS_L.png", getHistImg(histogramme(hls_split[1])));
+    cv::imshow("hist", hls_split[1]);
+    // cv::imshow("hist_white_HLS_S.png", getHistImg(histogramme(hls_split[2])));
+    std::vector<cv::Mat> tmp = hist3D(white_hls);
+    // cv::imshow("hist_3D_HLS.png", tmp[0]);
 
-    // cv::Mat hist_hls[3];
-    // for (int i = 0; i < 3; i++)
-    // {
-    //     hist_hls[i] = getHistImg(histogramme(white_hls_split[i], mask));
-    //     // cv::imshow("split_" + std::to_string(i), white_hls_split[i]);
-    //     // cv::imshow("hist_" + std::to_string(i), hist_hls[i]);
-    // }
+    // cv::imwrite("white_HSL.png", white_hls);
+    // cv::imshow("white_HLS", white_hls);
+    cv::Mat white_hls_split[3];
+    cv::split(white_hls, white_hls_split);
 
-    // // Equalisation d'histogramme L
-    // cv::Mat equalised_channels_hls[3];
-    // equalised_channels_hls[0] = white_hls_split[0];
-    // equalised_channels_hls[2] = white_hls_split[2];
-    // cv::Mat res_eq_mask;
-    // equalizeHistWithMask(white_hls_split[1], res_eq_mask, mask);
-    // equalizeHistWithMask(white_hls_split[1], equalised_channels_hls[1]);
-    // cv::Mat equalised_hls_no_mask;
-    // cv::merge(equalised_channels_hls, 3, equalised_hls_no_mask);
-    // cv::Mat to_show;
-    // cv::cvtColor(equalised_hls_no_mask, to_show, cv::COLOR_HLS2BGR_FULL);
-    // // cv::imshow("white", white_hls);
-    // // cv::imshow("equalised_hLs_no_mask", to_show);
-    // cv::Mat equalised_hls_mask;
-    // cv::Mat equalised_channels_hls_mask[3];
-    // equalised_channels_hls_mask[0] = equalised_channels_hls[0];
-    // equalised_channels_hls_mask[1] = res_eq_mask;
-    // equalised_channels_hls_mask[2] = equalised_channels_hls[2];
-    // cv::merge(equalised_channels_hls_mask, 3, equalised_hls_mask);
-    // cv::Mat to_show2;
-    // cv::cvtColor(equalised_hls_mask, to_show2, cv::COLOR_HLS2BGR_FULL);
-    // // cv::imshow("equalised_hLs_mask", to_show2);
-    // cv::Mat hist_hls_eq = getHistImg(histogramme(equalised_channels_hls_mask[1], mask));
-    // // cv::imshow("hist_hls_eq", hist_hls_eq);
+    cv::Mat hist_hls[3];
+    for (int i = 0; i < 3; i++)
+    {
+        hist_hls[i] = getHistImg(histogramme(white_hls_split[i], mask));
+        // cv::imshow("split_" + std::to_string(i), white_hls_split[i]);
+        // cv::imshow("hist_" + std::to_string(i), hist_hls[i]);
+    }
+
+    // Equalisation d'histogramme L
+    cv::Mat equalised_channels_hls[3];
+    equalised_channels_hls[0] = white_hls_split[0];
+    equalised_channels_hls[2] = white_hls_split[2];
+    cv::Mat res_eq_mask;
+    equalizeHistWithMask(white_hls_split[1], res_eq_mask, mask);
+    equalizeHistWithMask(white_hls_split[1], equalised_channels_hls[1]);
+    cv::Mat equalised_hls_no_mask;
+    cv::merge(equalised_channels_hls, 3, equalised_hls_no_mask);
+    cv::Mat to_show;
+    cv::cvtColor(equalised_hls_no_mask, to_show, cv::COLOR_HLS2BGR_FULL);
+    // cv::imshow("white", white_hls);
+    // cv::imshow("equalised_hLs_no_mask", to_show);
+    cv::Mat equalised_hls_mask;
+    cv::Mat equalised_channels_hls_mask[3];
+    equalised_channels_hls_mask[0] = equalised_channels_hls[0];
+    equalised_channels_hls_mask[1] = res_eq_mask;
+    equalised_channels_hls_mask[2] = equalised_channels_hls[2];
+    cv::merge(equalised_channels_hls_mask, 3, equalised_hls_mask);
+    cv::Mat to_show2;
+    cv::cvtColor(equalised_hls_mask, to_show2, cv::COLOR_HLS2BGR_FULL);
+    // cv::imshow("equalised_hLs_mask", to_show2);
+    cv::Mat hist_hls_eq = getHistImg(histogramme(equalised_channels_hls_mask[1], mask));
+    // cv::imshow("hist_hls_eq", hist_hls_eq);
 }
 
 void TP2()
