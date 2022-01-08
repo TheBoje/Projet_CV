@@ -4,28 +4,9 @@ Composition du groupe :
 - Vincent COMMIN
 - Louis LEENART
 
-- [Compte rendu de TP 1](#compte-rendu-de-tp-1)
-- [Introduction](#introduction)
-- [Exercice 2 : Histogramme 1D sur niveaux de gris](#exercice-2--histogramme-1d-sur-niveaux-de-gris)
-  - [1. Calcul de l'histogramme de l'image](#1-calcul-de-lhistogramme-de-limage)
-  - [2. Étirement d'histogramme](#2-étirement-dhistogramme)
-  - [3. Création du masque](#3-création-du-masque)
-  - [4. Histogramme avec masque](#4-histogramme-avec-masque)
-  - [5. Histogramme cumulé et égalisation d'histogramme](#5-histogramme-cumulé-et-égalisation-dhistogramme)
-- [Exercice 3 : Balance des blancs sur les canaux BGR](#exercice-3--balance-des-blancs-sur-les-canaux-bgr)
-  - [1. Création d'une fonction de balance des blancs](#1-création-dune-fonction-de-balance-des-blancs)
-  - [2. Utilisation de la fonction de OpenCV](#2-utilisation-de-la-fonction-de-opencv)
-  - [3. Balance des blancs seuillée](#3-balance-des-blancs-seuillée)
-- [Exercice 4 : Histogramme 1D sur les canaux BGR](#exercice-4--histogramme-1d-sur-les-canaux-bgr)
-  - [1. Superposition des histogrammes](#1-superposition-des-histogrammes)
-  - [3. Comparaison des histogramme](#3-comparaison-des-histogramme)
-  - [4. Étirement et égalisation d'histogramme](#4-étirement-et-égalisation-dhistogramme)
-  - [5. Seuillage de l'image](#5-seuillage-de-limage)
-- [Exercice 5 : Histogramme 1D sur les canaux HLS](#exercice-5--histogramme-1d-sur-les-canaux-hls)
-  - [1. Conversion vers HLS, Histogrammes et égalisation d'histogrammes](#1-conversion-vers-hls-histogrammes-et-égalisation-dhistogrammes)
-  - [2. Segmentation de l'image](#2-segmentation-de-limage)
-
 # Introduction
+
+Note au correcteur : Nous avons appris des consignes complètes au moment de rendre ce compte rendu de TP. Nous n'avons donc pas réalisé d'explications des algorithmes utilisés ni de schémas explicatifs. 
 
 Ce premier TP de Computer Vision a pour but de nous initier à la libraire OpenCV, notamment avec la manipulation d'histogrammes (création, étirement, égalisation), de format d'encodage d'image (BGR, nuances de gris, HLS, etc.) et avec la notion de masque.
 
@@ -47,10 +28,10 @@ On constate que l'histogramme a pour maximum 120, aussi bien pour le maximum d'o
 
 L'étirement d'histogramme consiste à augmenter le contraste de l'image en augmentant sur l'histogramme l'intervalle [min, max]. On obtient alors le résultat suivant :
 
-|        Initiale        |             Etirée             |
-| :--------------------: | :----------------------------: |
-| ![](/img/tp1/gray.png) |   ![](img/tp1/stretched.png)   |
-| ![](/img/tp1/hist.png) | ![](img/tp1/stretchedhist.png) |
+|       Initiale        |             Etirée             |
+| :-------------------: | :----------------------------: |
+| ![](img/tp1/gray.png) |   ![](img/tp1/stretched.png)   |
+| ![](img/tp1/hist.png) | ![](img/tp1/stretchedhist.png) |
 
 On remarque que l'étirement de l'histogramme amplifie le contraste de l'image. Le résultat est donc plus lisible. Cependant, l'étirement pose un problème, des couleurs déjà existantes ne sont plus présentes (écart entre plusieurs piques de couleurs).
 
@@ -64,15 +45,9 @@ Pour le calculer, nous utilisons une croissance de germes dans les quatre coins 
 
 ## 4. Histogramme avec masque
 
-<table>
-  <tr>
-    <td><img src="img/tp1/streched_image_mask.png"/></td>
-    <td><img src="img/tp1/streched_hist_mask.png"/></td>
-  </tr>
-  <tr>
-    <td colspan=2><em>Image étiré avec son histogramme</td>
-  </tr>
-</table>
+| ![](img/tp1/streched_image_mask.png) | ![](img/tp1/streched_hist_mask.png) |
+| :----------------------------------: | :---------------------------------: |
+|            *image étirée*            |   *histogramme de l'image étirée*   |
 
 ## 5. Histogramme cumulé et égalisation d'histogramme
 
@@ -83,6 +58,7 @@ Pour le calculer, nous utilisons une croissance de germes dans les quatre coins 
 L'image issue de l'égalisation est plus contrastée que l'image originale. Son histogramme est plus étiré sur les pixels les plus clairs. On remarque que l'histogramme cumulé est bien linéaire comme attendu, cependant, il n'est pas de la forme $x = y$.
 
 Voici les résultats de l'égalisation que nous avons programmé. Celle-ci prend en compte le masque pour le fond :
+
 | ![](img/tp1/equalized_perso.png) | ![](img/tp1/hist_equalized_perso.png) | ![](img/tp1/hist_cum_equalized_perso.png) |
 | :------------------------------: | :-----------------------------------: | :---------------------------------------: |
 |         *image égalisée*         |   *histogramme de l'image égalisée*   |           *histogramme cumulé*            |
@@ -125,7 +101,7 @@ Les pics larges correspondent à la table, et les pics très étroits correspond
 
 ## 3. Comparaison des histogramme
 
-|      ![](/img/tp1/hist_3D_mask.png)      |       ![](/img/tp1/hist_3D_wb.png)       |
+|      ![](img/tp1/hist_3D_mask.png)       |       ![](img/tp1/hist_3D_wb.png)        |
 | :--------------------------------------: | :--------------------------------------: |
 | *histogramme avec masque image initiale* | *histogramme avec masque image balancée* |
 
@@ -133,30 +109,28 @@ On remarque que les histogrammes sont assez similaires, mais il y a un léger d�
 
 ## 4. Étirement et égalisation d'histogramme
 
-|                                                               |                    *image*                     |          *histogramme avec masque*          |
-| :-----------------------------------------------------------: | :--------------------------------------------: | :-----------------------------------------: |
-|                       *image initiale*                        |           ![](/img/tp1/initiale.png)           |       ![](/img/tp1/hist_3D_mask.png)        |
-|        *balance de blancs et étirement d'histogramme*         |   ![](/img/tp1/white_balance_stretched.png)    |   ![](/img/tp1/hist_3D_wb_stretched.png)    |
-|       *balance de blancs et égalisation d'histogramme*        |      ![](/img/tp1/white_balance_equa.png)      |      ![](/img/tp1/hist_3D_wb_equa.png)      |
-| *balance de blancs et égalisation et étirement d'histogramme* | ![](/img/tp1/white_balance_equa_stretched.png) | ![](/img/tp1/hist_3D_wb_equa_stretched.png) |
+|                                                               |                    *image*                    |         *histogramme avec masque*          |
+| :-----------------------------------------------------------: | :-------------------------------------------: | :----------------------------------------: |
+|                       *image initiale*                        |           ![](img/tp1/initiale.png)           |       ![](img/tp1/hist_3D_mask.png)        |
+|        *balance de blancs et étirement d'histogramme*         |   ![](img/tp1/white_balance_stretched.png)    |   ![](img/tp1/hist_3D_wb_stretched.png)    |
+|       *balance de blancs et égalisation d'histogramme*        |      ![](img/tp1/white_balance_equa.png)      |      ![](img/tp1/hist_3D_wb_equa.png)      |
+| *balance de blancs et égalisation et étirement d'histogramme* | ![](img/tp1/white_balance_equa_stretched.png) | ![](img/tp1/hist_3D_wb_equa_stretched.png) |
 
 ## 5. Seuillage de l'image
 
 En utilisant l'image résultant de l'égalisation puis étirement d'histogramme, nous avons réussi à isoler les faces, notamment avec les valeurs BRG (58, 98, 85) :
 
-| ![](/img/tp1/equa_stretched_threshold.png) |
-| :----------------------------------------: |
-|              *image seuillée*              |
+![](img/tp1/equa_stretched_threshold.png)
 
 # Exercice 5 : Histogramme 1D sur les canaux HLS
 
 ## 1. Conversion vers HLS, Histogrammes et égalisation d'histogrammes
 
-|   ![](/img/tp1/white_HLS_H.png)    |   ![](/img/tp1/white_HLS_L.png)    |   ![](/img/tp1/white_HLS_S.png)    |         ![](/img/tp1/white_HLS.png)         |
-| :--------------------------------: | :--------------------------------: | :--------------------------------: | :-----------------------------------------: |
-|     *image balancée canal Hue*     |  *image balancée canal Lightness*  | *image balancée canal Saturation*  |      *image balancée convertie en HLS*      |
-| ![](/img/tp1/hist_white_HLS_H.png) | ![](/img/tp1/hist_white_HLS_L.png) | ![](/img/tp1/hist_white_HLS_S.png) |        ![](/img/tp1/hist_3D_HLS.png)        |
-|      *histogramme canal Hue*       |   *histogramme canal Lightness*    |   *histogramme canal Saturation*   | *histogramme des canaux HLS affiché en BGR* |
+|   ![](img/tp1/white_HLS_H.png)    |   ![](img/tp1/white_HLS_L.png)    |   ![](img/tp1/white_HLS_S.png)    |         ![](img/tp1/white_HLS.png)          |
+| :-------------------------------: | :-------------------------------: | :-------------------------------: | :-----------------------------------------: |
+|    *image balancée canal Hue*     | *image balancée canal Lightness*  | *image balancée canal Saturation* |      *image balancée convertie en HLS*      |
+| ![](img/tp1/hist_white_HLS_H.png) | ![](img/tp1/hist_white_HLS_L.png) | ![](img/tp1/hist_white_HLS_S.png) |        ![](img/tp1/hist_3D_HLS.png)         |
+|      *histogramme canal Hue*      |   *histogramme canal Lightness*   |  *histogramme canal Saturation*   | *histogramme des canaux HLS affiché en BGR* |
 
 On note que pour la conversion de `BGR` vers `HLS`, on utilise le code de conversion `cv::COLOR_BGR2HLS_FULL` qui permet d'obtenir $H \in [0, 255]$ au lieu de $[0, 180]$ avec le code `cv::COLOR_BGR2HLS`. Cela nous permet donc de réutiliser notre fonction de calcul d'histogramme 1D vu précédemment.
 
@@ -168,16 +142,20 @@ Pour le canal H, le pic en 0 correspond au fond, et le pic en ~25 à la table.
 Pour le canal L, le pic en 60 correspond à la table et aux faces du Rubik's cube, et le pic en 120 au fond de l'image.
 Pour le canal S, le pic en 0 correspond au fond de l'image.
 
+![](img/tp1/white_HLS_equa_mask.png)
+
+ *image balancée avec canal L égalisée avec masque*
+
 ## 2. Segmentation de l'image
 
 Notre but ici est d'isoler le Rubik's cube de la table et du fond. Pour cela nous utilisons la teinte. Passer par la teinte nous permet d'ajouter la table au masque en effectuant un seuillage. Ainsi, toutes les valeurs de teintes ne se trouvant pas sur le Rubik's cube sont mise à 0 dans le masque.
 
-| ![](/img/tp1/hue_raw.png) | ![](img/tp1/hue_segmented.png) | ![](img/tp1/segmented.png) |
-| :---: | :---: | :---: |
-|   *teinte de l'image de base avec balance des blancs*    |   *canal de la teinte segmentée (on prend un seuil à 58 car la teinte de la table se trouve en dessous de cette valeur et que le fond se trouve déjà dans le masque)*   |   *image segmentée par un masque calculé à partir d'un seuillage de la teinte sur tous les canaux*    |
+|              ![](img/tp1/hue_raw.png)               |                                                                   ![](img/tp1/hue_segmented.png)                                                                    |                                    ![](img/tp1/segmented.png)                                    |
+| :-------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------: |
+| *teinte de l'image de base avec balance des blancs* | *canal de la teinte segmentée (on prend un seuil à 58 car la teinte de la table se trouve en dessous de cette valeur et que le fond se trouve déjà dans le masque)* | *image segmentée par un masque calculé à partir d'un seuillage de la teinte sur tous les canaux* |
 
 Afin de séparer chaque face (donc couleur) du cube, nous avons cherché le seuille de manière empirique en utilisant une trackbar. Comme chaque ton est différent et que nous souhaitons les séparer, nous sommes obligés d'utiliser un masque "inférieur" et un masque "supérieur" calculé par seuillage.
 
-| ![](img/tp1/rr.png) | ![](img/tp1/rg.png) | ![](img/tp1/rb.png) |
-| :---: | :---: | :---: |
-|   *face rouge avec un ton compris entre 178 et 197*    |   *face verte avec un ton compris entre 119 et 160*   |   *face bleue avec un ton compris entre 58 et 72*    |
+|                ![](img/tp1/rr.png)                |                ![](img/tp1/rg.png)                |               ![](img/tp1/rb.png)               |
+| :-----------------------------------------------: | :-----------------------------------------------: | :---------------------------------------------: |
+| *face rouge avec un ton compris entre 178 et 197* | *face verte avec un ton compris entre 119 et 160* | *face bleue avec un ton compris entre 58 et 72* |
