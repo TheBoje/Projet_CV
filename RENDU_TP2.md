@@ -25,9 +25,17 @@ On remarque que même en changeant la taille du filtre, le résultat reste le m�
 
 ## 2. Filtre gaussien
 
+| ![](img/tp2/gaussian_1_3x3.png) | ![](img/tp2/gaussian_1_3x3.png) | ![](img/tp2/gaussian_1_3x3.png) |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| *image avec filtre gaussien 3x3*        | *image avec filtre gaussien 5x5*        | *image avec filtre gaussien 7x7*        |
 
+Le filtre gaussien applique un flou tout en permettant mieux de garder les contours. On constate donc qu'il n'y a pas de grande différences entre les images filtrées avec des filtres de taille différente et l'image de base. Ceci est dû au type de bruit, chaque pixel bruité est considéré comme une bordure et est donc gardé par le filtre. Comparé au filtre moyenneur, les contours sont mieux conservé mais le bruit l'est aussi.
 
 ## 3. Filtre bilateral
+
+
+
+
 
 ## 4. Filtre médian
 
