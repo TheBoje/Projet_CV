@@ -33,9 +33,13 @@ Le filtre gaussien applique un flou tout en permettant mieux de garder les conto
 
 ## 3. Filtre bilateral
 
+| ![](img/tp2/bilateral_10_1.png) | ![](img/tp2/bilateral_10_2.png) | ![](img/tp2/bilateral_10_3.png) |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| *image avec filtre bilateral appliqué 1 fois*        | *image avec filtre bilateral appliqué 2 fois*        | *image avec filtre bilateral appliqué 3 fois*        |
 
+On constate que le filtre bilatéral retire plus de bruit mais accentue le flou (plus que le filtre moyenneur et gaussien). On remarque que les parties les plus débruités sont la table et le Rubik's cube. Le bruit sur le fond blanc est mélangé avec celui-ci.
 
-
+Le filtre bilatéral permet de réduire le bruit faible tout en gardant les contours. Etant donné la nature du bruit (poivre et sel) il n'est pas très adéquat.
 
 ## 4. Filtre médian
 
