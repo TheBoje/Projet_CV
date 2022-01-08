@@ -43,7 +43,24 @@ Le filtre bilatéral permet de réduire le bruit faible tout en gardant les cont
 
 ## 4. Filtre médian
 
+
+| ![](img/tp2/median_1_3.png) | ![](img/tp2/median_1_5.png) | ![](img/tp2/median_1_5-3.png) |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| *image avec filtre médian de taille 3*        | *image avec filtre médian de taille 5*        | *image avec filtre médian de taille 5 puis de taille 3*        |
+
+On constate que le filtre médian est le filtre à utiliser pour éliminer le bruit poivre et sel. De plus, il permet de garder les contours épais.
+
 ## 5. Histogramme avec masque de l'image bruitée
+
+| ![](img/tp2/hist.png) | ![](img/tp2/hist_with_mask.png) | ![](img/tp2/hist_with_mask_erode.png) |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| *histogramme de l'image sans masque*        | *histogramme de l'image avec le masque par croissance de germe*        | *histogramme de l'image avec le masque du seuil et de l'érosion*        |
+
+| ![](img/tp2/mask_floodfill.png) | ![](img/tp2/mask_thresh.png) |
+| ----------------------------- | ----------------------------- |
+|   *masque obtenue par croissance de germe sur un pixel blanc*                            |  *masque obtenue par seuillage des pixels blancs et érosion en rectangle de 3x3*                             |
+
+On constate que le masqe calculé à partir du seuil et de l'érosion élimine plus de pixels blancs que le masque calculé à partir de la croissance de germe. Le pique toujours présent en 255 est du aux pixels de bruits qui sont présents sur la table et sur le Rubik's cube.
 
 ## 6. Filtre médian #2 
 
