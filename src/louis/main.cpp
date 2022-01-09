@@ -490,7 +490,7 @@ void TP1()
     cv::merge(equalised_channels_hls_mask, 3, equalised_hls_mask);
     cv::Mat to_show2;
     cv::cvtColor(equalised_hls_mask, to_show2, cv::COLOR_HLS2BGR_FULL);
-    cv::imwrite("white_balance_HLS_equa.png", to_show2);
+    cv::imwrite("white_balance_HLS_equa.png-", to_show2);
     cv::Mat hist_hls_eq = getHistImg(histogramme(equalised_channels_hls_mask[1], mask));
     // cv::imshow("hist_hls_eq", hist_hls_eq);
 }
@@ -498,9 +498,11 @@ void TP1()
 void TP2()
 {
     std::string imageName("img2.png");
+    cv::Mat clean_img = cv::imread("img.png", cv::IMREAD_COLOR);
 
     cv::Mat image, blur;
     image = cv::imread(imageName, cv::IMREAD_COLOR);
+    blur = cv::imread("median_blur_perso.png", cv::IMREAD_COLOR);
     // cv::imshow("default", image);
     // cv::blur(image, blur, cv::Size(3, 3));
     // cv::blur(image, blur, cv::Size(5, 5));
@@ -509,39 +511,129 @@ void TP2()
     // cv::GaussianBlur(image, blur, cv::Size(7, 7), 5);
     // cv::bilateralFilter(image, blur, 10, 200, 200);
 
-    cv::medianBlur(image, blur, 3);
-    cv::medianBlur(blur, blur, 3);
-    cv::medianBlur(blur, blur, 3);
+    // cv::medianBlur(image, blur, 3);
+    // cv::medianBlur(blur, blur, 3);
+    // cv::medianBlur(blur, blur, 3);
 
     cv::Mat grayImage;
-    cv::cvtColor(blur, grayImage, cv::COLOR_BGR2GRAY);
+    cv::cvtColor(clean_img, grayImage, cv::COLOR_BGR2GRAY);
     cv::Mat equalizedImg = stretchHist(grayImage);
     cv::Mat mask = cv::Mat::zeros(equalizedImg.rows + 2, equalizedImg.cols + 2, CV_8UC1);
     cv::floodFill(equalizedImg, mask, cv::Point(0, 0), 1, 0, cv::Scalar(), cv::Scalar(), cv::FLOODFILL_MASK_ONLY);
     cv::floodFill(equalizedImg, mask, cv::Point(equalizedImg.cols - 1, 0), 1, 0, cv::Scalar(), cv::Scalar(), cv::FLOODFILL_MASK_ONLY);
     cv::floodFill(equalizedImg, mask, cv::Point(0, equalizedImg.rows - 1), 1, 0, cv::Scalar(), cv::Scalar(), cv::FLOODFILL_MASK_ONLY);
     cv::floodFill(equalizedImg, mask, cv::Point(equalizedImg.cols - 1, equalizedImg.rows - 1), 1, 0, cv::Scalar(), cv::Scalar(), cv::FLOODFILL_MASK_ONLY);
-
+    
     mask = 1 - mask;
     mask.adjustROI(-1, -1, -1, -1);
-    // Histogramme 3D
-    cv::Mat channels[3];
-    cv::split(image, channels);
-    channels[0] = getHistImg(histogramme(channels[0], mask));
-    channels[1] = getHistImg(histogramme(channels[1], mask));
-    channels[2] = getHistImg(histogramme(channels[2], mask));
-    cv::Mat res;
-    cv::merge(channels, 3, res);
-    // cv::imshow("hist blured", res);
-    // cv::imshow("blured", blur);
+    // cv::Mat channels[3];
+    // cv::split(blur, channels);
+    // std::cout << "yay" << std::endl;
+    // channels[0] = getHistImg(histogramme(channels[0], mask));
+    // channels[1] = getHistImg(histogramme(channels[1], mask));
+    // channels[2] = getHistImg(histogramme(channels[2], mask));
+    // cv::Mat res;
+    // cv::merge(channels, 3, res);
+    // cv::imwrite("./hist_median_perso_0.png", res);
+
+    blur = image;
+    for (int i = 1; i < 4; i++) {
+        std::cout << i << std::endl;
+        cv::medianBlur(blur, blur, 3);
+        cv::imwrite("./median_3x3_" + std::to_string(i) + ".png", blur);
+        cv::Mat channels[3];
+        cv::split(image, channels);
+        channels[0] = getHistImg(histogramme(channels[0], mask));
+        channels[1] = getHistImg(histogramme(channels[1], mask));
+        channels[2] = getHistImg(histogramme(channels[2], mask));
+        cv::Mat res;
+        cv::merge(channels, 3, res);
+        cv::imwrite("./hist_median_3x3_" + std::to_string(i) + ".png", res);
+    }
+}
+
+using namespace cv;
+using namespace std;
+
+void mediumFilter(const Mat& src, Mat& dst, int diameter, const Mat& mask = Mat())
+{
+    if (diameter % 2 == 0)
+        return;
+
+
+    int radius = (diameter / 2) + 1;
+    copyMakeBorder(src, dst, radius, radius, radius, radius, BORDER_REFLECT);
+
+    Mat maskIn;
+    if (mask.empty())
+        maskIn = Mat::ones(Size(src.cols + 2 * radius, src.rows + 2 * radius), CV_8UC1);
+    else
+        copyMakeBorder(mask, maskIn, radius, radius, radius, radius, BORDER_REFLECT);
+
+    imshow("mask in", maskIn * 255);
+    cout << maskIn.size() << endl;
+
+    vector<uchar> B;
+    vector<uchar> G;
+    vector<uchar> R;
+
+    B.reserve(diameter * diameter);
+    G.reserve(diameter * diameter);
+    R.reserve(diameter * diameter);
+
+    vector<uchar> BGR[3] = { B, G, R };
+
+    Mat channels[3];
+    Mat channelsCopy[3];
+    split(dst, channels);
+    split(dst, channelsCopy);
+
+
+    for (int i = radius; i < src.rows + 1; i++) {
+        for (int j = radius; j < src.cols + 1; j++) {
+            if (maskIn.at<uchar>(i, j) == 1) {
+                for (int x = -radius; x <= radius; x++) {
+                    for (int y = -radius; y <= radius; y++) {
+                        bool isWhite = dst.at<Vec3b>(i + x, j + y) == Vec3b(255, 255, 255);
+                        for (int c = 0; c < 3; c++) {
+                            uchar color = channels[c].at<uchar>(i + x, j + y);
+
+                            if ((color != 255 && color != 0) || isWhite)
+                                BGR[c].push_back(color);
+                        }
+                    }
+                }
+                for (int c = 0; c < 3; c++) {
+                    int n = BGR[c].size() / 2;
+                    if (!(n >= BGR[c].size())) {
+                        sort(BGR[c].begin(), BGR[c].end());;
+                        channelsCopy[c].at<uchar>(i, j) = BGR[c][n];
+                        BGR[c].clear();
+                    }
+                }
+            } else {
+                for (int c = 0; c < 3; c++) {
+                    channelsCopy[c].at<uchar>(i, j) = 255;
+                }
+            }
+        }
+    }
+
+    radius = -radius;
+    for (int c = 0; c < 3; c++)
+    {
+        channelsCopy[c].adjustROI(radius, radius-1, radius, radius-1);
+    }
+
+    cv::merge(channelsCopy, 3, dst);
 }
 
 int main()
 {
     cv::utils::logging::setLogLevel(cv::utils::logging::LogLevel::LOG_LEVEL_SILENT);
 
-    TP1();
-    //TP2();
+    // TP1();
+    TP2();
 
     cv::waitKey(0);
     
