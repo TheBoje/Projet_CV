@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>RENDU_TP2</title>
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="compte-rendu-de-tp-2">Compte rendu de TP 2</h1>
+<p>Composition du groupe : - Vincent COMMIN - Louis LEENART</p>
+<h1 id="introduction">Introduction</h1>
+<p>Ce second TP de Computer Vision a pour but de nous faire appliquer les différents algorithmes de filtrage dans le but de restaurer une image bruitée. Plus précisément, nous étudierons une image contenant du bruit impulsionnel (dit bruit poivre et sel), et du bruit blanc gaussien.</p>
+<h1 id="exercice-1-suppression-dun-bruit-impulsionnel">Exercice 1 : Suppression d’un bruit impulsionnel</h1>
+<p>L’objectif de cet exercice est de retirer le bruit impulsionnel de cette image : <img src="img/tp2/Rubiks_cube_L_impulse.png" /></p>
+<h2 id="filtre-moyenneur">1. Filtre moyenneur</h2>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><img src="img/tp2/blured_1_3x3.png" /></th>
+<th style="text-align: center;"><img src="img/tp2/blured_2_3x3.png" /></th>
+<th style="text-align: center;"><img src="img/tp2/blured_6_3x3.png" /></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><em>image floutée 1 fois</em></td>
+<td style="text-align: center;"><em>image floutée 2 fois</em></td>
+<td style="text-align: center;"><em>image floutée 6 fois</em></td>
+</tr>
+</tbody>
+</table>
+<p>Après application du filtre moyenneur plusieurs fois sur l’image, on constate que celle-ci ne tend pas vers une image amélioré. Non-seulement l’image n’est pas bien débruitée mais celle-ci devient de plus en plus floue. On perd donc toutes les informations liées au contour.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><img src="img/tp2/blured_1_5x5.png" /></th>
+<th style="text-align: center;"><img src="img/tp2/blured_1_7x7.png" /></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><em>image floutée 1 fois par un filtre 5x5</em></td>
+<td style="text-align: center;"><em>image floutée 1 fois par un filtre 7x7</em></td>
+</tr>
+</tbody>
+</table>
+<p>On remarque que même en changeant la taille du filtre, le résultat reste le même, à savoir : flou tout en diluant le bruit dans l’image.</p>
+<h2 id="filtre-gaussien">2. Filtre gaussien</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><img src="img/tp2/gaussian_1_3x3.png" /></th>
+<th style="text-align: center;"><img src="img/tp2/gaussian_1_3x3.png" /></th>
+<th style="text-align: center;"><img src="img/tp2/gaussian_1_3x3.png" /></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><em>image avec filtre gaussien 3x3</em></td>
+<td style="text-align: center;"><em>image avec filtre gaussien 5x5</em></td>
+<td style="text-align: center;"><em>image avec filtre gaussien 7x7</em></td>
+</tr>
+</tbody>
+</table>
+<p>Le filtre gaussien applique un flou tout en permettant mieux de garder les contours. On constate donc qu’il n’y a pas de grande différences entre les images filtrées avec des filtres de taille différente et l’image de base. Ceci est dû au type de bruit, chaque pixel bruité est considéré comme une bordure et est donc gardé par le filtre. Comparé au filtre moyenneur, les contours sont mieux conservé mais le bruit l’est aussi.</p>
+<h2 id="filtre-bilateral">3. Filtre bilateral</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><img src="img/tp2/bilateral_10_1.png" /></th>
+<th style="text-align: center;"><img src="img/tp2/bilateral_10_2.png" /></th>
+<th style="text-align: center;"><img src="img/tp2/bilateral_10_3.png" /></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><em>image avec filtre bilateral appliqué 1 fois</em></td>
+<td style="text-align: center;"><em>image avec filtre bilateral appliqué 2 fois</em></td>
+<td style="text-align: center;"><em>image avec filtre bilateral appliqué 3 fois</em></td>
+</tr>
+</tbody>
+</table>
+<p>On constate que le filtre bilatéral retire plus de bruit mais accentue le flou (plus que le filtre moyenneur et gaussien). On remarque que les parties les plus débruités sont la table et le Rubik’s cube. Le bruit sur le fond blanc est mélangé avec celui-ci.</p>
+<p>Le filtre bilatéral permet de réduire le bruit faible tout en gardant les contours. Etant donné la nature du bruit (poivre et sel) il n’est pas très adéquat.</p>
+<h2 id="filtre-médian">4. Filtre médian</h2>
+<table>
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 29%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><img src="img/tp2/median_1_3.png" /></th>
+<th style="text-align: center;"><img src="img/tp2/median_1_5.png" /></th>
+<th style="text-align: center;"><img src="img/tp2/median_1_5-3.png" /></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><em>image avec filtre médian de taille 3</em></td>
+<td style="text-align: center;"><em>image avec filtre médian de taille 5</em></td>
+<td style="text-align: center;"><em>image avec filtre médian de taille 5 puis de taille 3</em></td>
+</tr>
+</tbody>
+</table>
+<p>On constate que le filtre médian est le filtre à utiliser pour éliminer le bruit poivre et sel. De plus, il permet de garder les contours épais.</p>
+<h2 id="histogramme-avec-masque-de-limage-bruitée">5. Histogramme avec masque de l’image bruitée</h2>
+<table>
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 38%" />
+<col style="width: 39%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><img src="img/tp2/hist.png" /></th>
+<th style="text-align: center;"><img src="img/tp2/hist_with_mask.png" /></th>
+<th style="text-align: center;"><img src="img/tp2/hist_with_mask_erode.png" /></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><em>histogramme de l’image sans masque</em></td>
+<td style="text-align: center;"><em>histogramme de l’image avec le masque par croissance de germe</em></td>
+<td style="text-align: center;"><em>histogramme de l’image avec le masque du seuil et de l’érosion</em></td>
+</tr>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col style="width: 42%" />
+<col style="width: 57%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><img src="img/tp2/mask_floodfill.png" /></th>
+<th style="text-align: center;"><img src="img/tp2/mask_thresh.png" /></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><em>masque obtenue par croissance de germe sur un pixel blanc</em></td>
+<td style="text-align: center;"><em>masque obtenue par seuillage des pixels blancs et érosion en rectangle de 3x3</em></td>
+</tr>
+</tbody>
+</table>
+<p>On constate que le masque calculé à partir du seuil et de l’érosion élimine plus de pixels blancs que le masque calculé à partir de la croissance de germe. Le pique toujours présent en 255 est du aux pixels de bruits qui sont présents sur la table et sur le Rubik’s cube.</p>
+<h2 id="filtre-médian-2">6. Filtre médian #2</h2>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 21%" />
+<col style="width: 26%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><img src="img/tp2/median_1_3.png" /></th>
+<th style="text-align: center;"><img src="img/tp2/median_1_5.png" /></th>
+<th style="text-align: center;"><img src="img/tp2/median_blur_perso.png" /></th>
+<th style="text-align: center;"><img src="img/tp2/hist_median_perso_0.png" /></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><em>filtre médian 3x3 opencv</em></td>
+<td style="text-align: center;"><em>filtre médian 5x5 opencv</em></td>
+<td style="text-align: center;"><em>filtre médian perso en 3x3</em></td>
+<td style="text-align: center;"><em>histogramme filtre médian perso en 3x3</em></td>
+</tr>
+</tbody>
+</table>
+<p>On constate que le filtre médian personnel conserve mieux les contours tout en éliminant mieux le bruit impulsionnel.</p>
+<p>Description de l’algorithme utilisé :</p>
+<pre><code>fonction mediumFilter(src, dst, diametre, masque):
+    // Note: avec diametre impair
+    - Copie des bords de src vers dst sur une largeur de diametre / 2
+    - Pour chaque pixel (x, y) de src:
+        - Si compris dans le masque (masque.at(x, y) == 1)
+            - radius = diametre / 2
+            - initialise stock[3][] // liste de 3 listes 
+            - Pour i, j tel que (-radius &lt;= i &lt;= radius et -radius &lt;= j &lt;= radius) 
+                - Pour chaque channel c
+                    - Si (la valeur pixel est blanc) OU (la valeur du pixel pour le channel c != 255 et != 0)
+                        - Ajouter la valeur du pixel pour le channel c dans stock[c]
+                    - Fin Si
+                - Fin Pour
+            - Fin Pour
+            - Pour chaque channel c
+                - calculer v le médian de stock[c]
+                - appliquer v à dst.at(x, y) pour le channel c
+            - Fin Pour
+        - Sinon
+            - dst.at(x, y) = src.at(x, y)
+        - Fin Si
+    - Fin Pour
+- Fin fonction</code></pre>
+<h2 id="filtre-médian-multiples">7. Filtre médian multiples</h2>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><em>Nombre d’itération de filtre médian</em></th>
+<th style="text-align: center;"><em>Result</em></th>
+<th style="text-align: center;"><em>Histogramme associé</em></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0</td>
+<td style="text-align: center;"><img src="img/tp2/Rubiks_cube_L_impulse.png" /></td>
+<td style="text-align: center;"><img src="img/tp2/hist_median_3x3_0.png" /></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"><img src="img/tp2/median_3x3_1.png" /></td>
+<td style="text-align: center;"><img src="img/tp2/hist_median_3x3_1.png" /></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;"><img src="img/tp2/median_3x3_2.png" /></td>
+<td style="text-align: center;"><img src="img/tp2/hist_median_3x3_2.png" /></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">3</td>
+<td style="text-align: center;"><img src="img/tp2/median_3x3_3.png" /></td>
+<td style="text-align: center;"><img src="img/tp2/hist_median_3x3_3.png" /></td>
+</tr>
+</tbody>
+</table>
+<p>Après plusieurs passes du filtre médian 3x3 sur l’image bruitée, on remarque que le résultat final ne semble pas comporter de bruit, contrairement au résultat d’une seule itération. En comparant l’histogramme du résultat après 3 passes de filtre médian par rapport à l’algorithme personnel de filtre médian, on remarque que le pic en 255 est encore présent (bruit sur la table et sur le rubik’s cube) tandis que ce pic est absent pour l’algo perso. On note que l’histogramme utilise un marque pour le fond de l’image.</p>
+<h2 id="bruit-blanc-gaussien">8. Bruit blanc gaussien</h2>
+<p>Image d’origine avec bruit blanc gaussien : <img src="img/tp2/Rubiks_cube_R_gaussian.png" /></p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><img src="img/tp2/blured.png" /></th>
+<th style="text-align: center;"><img src="img/tp2/gaussian.png" /></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><em>filtre moyenneur</em></td>
+<td style="text-align: center;"><em>filtre gaussien</em></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><img src="img/tp2/bilateral.png" /></td>
+<td style="text-align: center;"><img src="img/tp2/median.png" /></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><em>filtre bilatéral</em></td>
+<td style="text-align: center;"><em>filtre médian</em></td>
+</tr>
+</tbody>
+</table>
+<p>On constate que le filtre gaussien n’a aucun effet sur l’image. Le filtre moyenneur quasiment pas non plus. Seul le filtre médian et le filtre bilateral ont un effet sur l’image. Le filtre médian homogénéise un peu plus l’image mais on garde encore un peu de bruit. Le filtre bilatéral est le mieux pour palier le bruit blanc gaussien mais rend l’image floue.</p>
+<p>Le meilleure technique serait sans doute d’utiliser plusieurs filtres les uns après les autres.</p>
+</body>
+</html>
