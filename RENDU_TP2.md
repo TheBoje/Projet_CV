@@ -64,13 +64,22 @@ On constate que le masqe calculé à partir du seuil et de l'érosion élimine p
 
 ## 6. Filtre médian #2 
 
-|  ![](img/tp2/median_1_3.png)   | ![](img/tp2/median_1_5.png) | ![](img/tp2/median_blur_perso.png) |
-| --- | --------------------------- | ---------------------------------- |
-|  *filtre médian 3x3 opencv*   | *filtre médian 5x5 opencv*  | *filtre médian perso en 3x3*       |
+| ![](img/tp2/median_1_3.png) | ![](img/tp2/median_1_5.png) | ![](img/tp2/median_blur_perso.png) |
+| --------------------------- | --------------------------- | ---------------------------------- |
+| *filtre médian 3x3 opencv*  | *filtre médian 5x5 opencv*  | *filtre médian perso en 3x3*       |
 
-On constate que le filtre médian personnel conserve mieux les contours tout en éliminant mieux le bruit impulsionnel
-
-## 7. Plusieurs passes de filtre médian
+On constate que le filtre médian personnel conserve mieux les contours tout en éliminant mieux le bruit impulsionnel.
 
 ## 8. Bruit blanc gaussien
 
+Image d'origine avec bruit blanc gaussien : ![](img/tp2/Rubiks_cube_R_gaussian.png)
+
+| ![](img/tp2/blured.png)    | ![](img/tp2/gaussian.png) |
+| -------------------------- | ------------------------- |
+| *filtre moyenneur*         | *filtre gaussien*         |
+| ![](img/tp2/bilateral.png) | ![](img/tp2/median.png)   |
+| *filtre bilatéral*         | *filtre médian*           |
+
+On constate que le filtre gaussien n'a aucun effet sur l'image. Le filtre moyenneur quasiment pas non plus. Seul le filtre médian et le filtre bilateral ont un effet sur l'image. Le filtre médian homogénéise un peu plus l'image mais on garde encore un peu de bruit. Le filtre bilatéral est le mieux pour palier le bruit blanc gaussien mais rend l'image floue. 
+
+Le meilleure technique serait sans doute d'utiliser plusieurs filtres les uns après les autres.
